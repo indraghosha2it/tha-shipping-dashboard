@@ -9,7 +9,9 @@ import { createShipment } from '@/services/shipping';
 import { createOrGetCustomerByAdmin } from '@/services/Authentication';
 
 // Location functions
-import { getStates  ,fetchCitiesByState   } from '@/services/location';
+// import { getStates  ,fetchCitiesByState   } from '@/services/location';
+
+import { getStates, fetchCitiesByState, getPostalCodes } from '@/services/location';
 
 // Icons
 import {
@@ -1517,6 +1519,8 @@ if (!finalTrackingNumber) {
                     <Select label="Country" name="receiver.address.country" value={formData.receiver.address.country} onChange={handleDestinationChange} options={DESTINATIONS} required error={errors.receiverCountry} />
                     <Select label="State" name="receiver.address.state" value={formData.receiver.address.state} onChange={handleStateChange} options={states.map(s => ({ value: s, label: s }))} required error={errors.receiverState} disabled={!formData.receiver.address.country} />
                     <Select label="City" name="receiver.address.city" value={formData.receiver.address.city} onChange={handleInputChange} options={cities.map(c => ({ value: c, label: c }))} required error={errors.receiverCity} disabled={!formData.receiver.address.state} />
+                    {/* <Input label="Postal Code" name="receiver.address.postalCode" value={formData.receiver.address.postalCode} onChange={handleInputChange} /> */}
+
                     <Input label="Postal Code" name="receiver.address.postalCode" value={formData.receiver.address.postalCode} onChange={handleInputChange} />
                     <div className="col-span-2">
                       <TextArea label="Delivery Instructions" name="receiver.deliveryInstructions" value={formData.receiver.deliveryInstructions} onChange={handleInputChange} placeholder="Special instructions for delivery" rows={2} />

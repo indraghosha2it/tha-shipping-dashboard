@@ -1706,6 +1706,29 @@ export default function ShipmentsPage() {
 
   useEffect(() => { fetchShipments(); }, [filters.page, filters.limit, filters.sortBy, filters.sortOrder]);
 
+
+  // Refetch when component first mounts (catches new shipments after navigation)
+useEffect(() => {
+  fetchShipments();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
+// Refetch when the browser tab regains focus
+useEffect(() => {
+  const onFocus = () => fetchShipments();
+  window.addEventListener('focus', onFocus);
+  return () => window.removeEventListener('focus', onFocus);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
+// Refetch when any other part of the app emits 'shipments-updated'
+useEffect(() => {
+  const handler = () => fetchShipments();
+  window.addEventListener('shipments-updated', handler);
+  return () => window.removeEventListener('shipments-updated', handler);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
   const handleFilterChange = (e) => { const { name, value } = e.target; setFilters(prev => ({ ...prev, [name]: value, page: 1 })); if (name === 'status' && value) setActiveStat('all'); };
   const handleSearch = (e) => { const searchValue = e.target.value; setFilters(prev => ({ ...prev, search: searchValue, page: 1 })); if (searchValue.trim() === '') setFilteredShipments(shipments); else setFilteredShipments(shipments.filter(s => (s.shipmentNumber && s.shipmentNumber.toLowerCase().includes(searchValue.toLowerCase())) || (s._id && s._id.toLowerCase().includes(searchValue.toLowerCase())))); };
   const handleSort = (field) => { const sortOrder = filters.sortBy === field && filters.sortOrder === 'asc' ? 'desc' : 'asc'; setFilters(prev => ({ ...prev, sortBy: field, sortOrder })); };

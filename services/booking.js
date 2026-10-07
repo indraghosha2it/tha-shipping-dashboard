@@ -52,27 +52,70 @@ const fetchBookingForRecovery = async (bookingId) => {
 // 1. CREATE BOOKING (Customer)
 // Controller: exports.createBooking
 // Endpoint: POST /bookings
+// export const createBooking = async (bookingData) => {
+//   const key = `createBooking:${JSON.stringify(bookingData || {})}`;
+
+//   return runSingleFlight(key, async () => {
+//   try {
+//     const response = await axiosInstance.post('/createBooking', bookingData);
+//     return {
+//       success: true,
+//       data: response.data.data,
+//       message: response.data.message
+//     };
+//   } catch (error) {
+//     console.error('Create booking error:', error);
+//     return {
+//       success: false,
+//       message: isTimeoutError(error)
+//         ? 'Request timed out. It may still be saved, please refresh bookings before retrying.'
+//         : (error.response?.data?.error || error.message || 'Failed to create booking'),
+//       error: error.response?.data
+//     };
+//   }
+//   });
+// };
+
 export const createBooking = async (bookingData) => {
   const key = `createBooking:${JSON.stringify(bookingData || {})}`;
 
   return runSingleFlight(key, async () => {
-  try {
-    const response = await axiosInstance.post('/createBooking', bookingData);
-    return {
-      success: true,
-      data: response.data.data,
-      message: response.data.message
-    };
-  } catch (error) {
-    console.error('Create booking error:', error);
-    return {
-      success: false,
-      message: isTimeoutError(error)
-        ? 'Request timed out. It may still be saved, please refresh bookings before retrying.'
-        : (error.response?.data?.error || error.message || 'Failed to create booking'),
-      error: error.response?.data
-    };
-  }
+    try {
+      const response = await axiosInstance.post('/createBooking', bookingData);
+      return {
+        success: true,
+        data: response.data.data,
+        message: response.data.message
+      };
+    } catch (error) {
+      // ===== FULL ERROR LOGGING =====
+      console.error('❌ CREATE BOOKING 400 — BACKEND SAID:');
+      console.error('   Status:', error.response?.status);
+      console.error('   Message:', error.response?.data?.message);
+      console.error('   Error:', error.response?.data?.error);
+      console.error('   Errors array:', error.response?.data?.errors);
+      console.error('   Full backend response:', error.response?.data);
+      console.error('   Sent payload:', bookingData);
+      // ==============================
+
+      // Try to extract the most useful message
+      const backendMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        (Array.isArray(error.response?.data?.errors)
+          ? error.response.data.errors.map((e) => e.msg || e.message).join(', ')
+          : '') ||
+        error.message ||
+        'Failed to create booking';
+
+      return {
+        success: false,
+        message: isTimeoutError(error)
+          ? 'Request timed out. It may still be saved, please refresh bookings before retrying.'
+          : backendMessage,
+        error: error.response?.data
+      };
+    }
   });
 };
 

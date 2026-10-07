@@ -432,7 +432,7 @@ export default function CreateBooking() {
           height: 0,
           unit: 'cm'
         },
-        productCategory: '',
+       productCategory: 'Others',
         hsCode: '',
         value: { 
           amount: 0, 
@@ -908,7 +908,7 @@ export default function CreateBooking() {
             weight: 0,
             volume: 0,
             dimensions: { length: 0, width: 0, height: 0, unit: 'cm' },
-            productCategory: '',
+            productCategory: 'Others',
             hsCode: '',
             value: { amount: 0, currency: formData.payment.currency || 'USD' },
             hazardous: false,
@@ -1208,7 +1208,7 @@ export default function CreateBooking() {
               height: Number(pkg.dimensions.height) || 0,
               unit: 'cm'
             },
-            productCategory: pkg.productCategory || '',
+            productCategory: pkg.productCategory || 'Others',
             hsCode: pkg.hsCode || '',
             value: {
               amount: Number(pkg.value.amount) || 0,

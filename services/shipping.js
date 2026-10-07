@@ -116,6 +116,7 @@ export const getAllShipments = async (params = {}) => {
       ...(params.endDate && { endDate: params.endDate }),
       ...(params.sortBy && { sortBy: params.sortBy }),
       ...(params.sortOrder && { sortOrder: params.sortOrder }),
+      
     });
 
     const response = await axiosInstance.get(`/getAllShipment?${queryParams}`);
