@@ -566,7 +566,7 @@ export default function FooterSettingsPage() {
         </section>
 
         {/* ============ GALLERY ============ */}
-        <section className="border border-gray-200 p-5 rounded-lg bg-white">
+        {/* <section className="border border-gray-200 p-5 rounded-lg bg-white">
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-semibold text-gray-900">
               Gallery ({settings.galleryImages?.length || 0}/6)
@@ -613,7 +613,7 @@ export default function FooterSettingsPage() {
               </label>
             </div>
           )}
-        </section>
+        </section> */}
 
         {/* ============ CONTACT ============ */}
         <section className="border border-gray-200 p-5 rounded-lg bg-white space-y-3">
